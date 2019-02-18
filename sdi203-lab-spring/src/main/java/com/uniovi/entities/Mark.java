@@ -3,6 +3,8 @@ package com.uniovi.entities;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Mark {
@@ -11,12 +13,22 @@ public class Mark {
 	private Long id;
 	private String description;
 	private Double score;
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
 
 	public Mark(Long id, String description, Double score) {
 		super();
 		this.id = id;
 		this.description = description;
 		this.score = score;
+	}
+
+	public Mark(String description, Double score, User user) {
+		super();
+		this.description = description;
+		this.score = score;
+		this.user = user;
 	}
 
 	public Mark() {
@@ -46,9 +58,11 @@ public class Mark {
 		this.score = score;
 	}
 
-	@Override
-	public String toString() {
-		return "Mark [id=" + id + ", description=" + description + ", score=" + score + "]";
+	public User getUser() {
+		return user;
 	}
 
+	public void setUser(User user) {
+		this.user = user;
+	}
 }
