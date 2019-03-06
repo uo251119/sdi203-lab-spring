@@ -11,4 +11,3 @@ public class Sdi203LabSpringApplication {
 	}
 
 }
-
