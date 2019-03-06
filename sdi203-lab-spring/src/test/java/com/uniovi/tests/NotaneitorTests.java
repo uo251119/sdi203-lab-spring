@@ -13,6 +13,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import com.uniovi.tests.pageobjects.PO_HomeView;
 import com.uniovi.tests.pageobjects.PO_NavView;
 import com.uniovi.tests.pageobjects.PO_Properties;
+import com.uniovi.tests.pageobjects.PO_RegisterView;
+import com.uniovi.tests.pageobjects.PO_View;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class NotaneitorTests {
@@ -63,14 +65,14 @@ public class NotaneitorTests {
 	// PR02. Opción de navegación. Pinchar en el enlace Registro en la página home
 	@Test
 	public void PR02() {
-		PO_NavView.clickOption(driver, "signup", "class", "btn btn-primary");
+		PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
 	}
 
 	// PR03. Opción de navegación. Pinchar en el enlace Identificate en la página
 	// home
 	@Test
 	public void PR03() {
-		PO_NavView.clickOption(driver, "login", "class", "btn btn-primary");
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
 	}
 
 	// PR04. Opción de navegación. Cambio de idioma de Español a Inglés y vuelta a
@@ -80,5 +82,35 @@ public class NotaneitorTests {
 		PO_HomeView.checkChangeIdiom(driver, "btnSpanish", "btnEnglish", PO_Properties.getSPANISH(),
 				PO_Properties.getENGLISH());
 		// SeleniumUtils.esperarSegundos(driver, 2);
+	}
+
+	// PR05. Prueba del formulario de registro. registro con datos correctos
+	@Test
+	public void PR05() {
+		// Vamos al formulario de registro
+		PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
+		// Rellenamos el formulario.
+		PO_RegisterView.fillForm(driver, "77777778A", "Josefo", "Perez", "77777", "77777");
+		// Comprobamos que entramos en la sección privada
+		PO_View.checkElement(driver, "text", "Notas del usuario");
+	}
+
+	// PR06. Prueba del formulario de registro. DNI repetido en la BD, Nombre corto,
+	// .... pagination pagination-centered, Error.signup.dni.length
+	@Test
+	public void PR06() {
+		// Vamos al formulario de registro
+		PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
+		// Rellenamos el formulario.
+		PO_RegisterView.fillForm(driver, "99999990A", "Josefo", "Perez", "77777", "77777");
+		PO_View.getP();
+		// COmprobamos el error de DNI repetido.
+		PO_RegisterView.checkKey(driver, "Error.signup.dni.duplicate", PO_Properties.getSPANISH());
+		// Rellenamos el formulario.
+		PO_RegisterView.fillForm(driver, "99999990B", "Jose", "Perez", "77777", "77777");
+		// COmprobamos el error de Nombre corto .
+		PO_RegisterView.checkKey(driver, "Error.signup.name.length", PO_Properties.getSPANISH());
+		// Rellenamos el formulario.
+		PO_RegisterView.fillForm(driver, "99999990B", "Josefo", "Per", "77777", "77777");
 	}
 }
